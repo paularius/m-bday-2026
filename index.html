@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Πρόσκληση</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#fde4ec;
+    --bg2:#f6c7d8;
+    --bg3:#f3d9e6;
+    --rose:#e17b98;
+    --rose-deep:#c8577a;
+    --heading:#c14e73;
+    --blue:#3d9fc9;
+    --cream:#fffafc;
+    --ink:#7a5561;
+    --panel:rgba(255,255,255,.62);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  html,body{height:100%}
+  body{
+    font-family:'Playpen Sans',system-ui,sans-serif;
+    color:var(--ink);
+    background:#f2c9d8;
+    display:flex;
+    justify-content:center;
+    align-items:stretch;
+    overflow:hidden;               /* καμία μπάρα scroll */
+  }
+
+  /* ---------- Κάρτα: πιάνει ΑΚΡΙΒΩΣ το ύψος της οθόνης ---------- */
+  .card{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    width:100%;
+    max-width:430px;
+    height:100vh;
+    height:100dvh;                 /* σωστό ύψος και σε κινητό */
+    overflow:hidden;
+    padding:0 24px 22px;
+    background:
+      radial-gradient(120% 60% at 10% 6%, #ffffff 0%, rgba(255,255,255,0) 42%),
+      radial-gradient(90% 50% at 92% 30%, #ffe8f0 0%, rgba(255,232,240,0) 55%),
+      linear-gradient(160deg, var(--bg1) 0%, var(--bg3) 45%, var(--bg2) 100%);
+    box-shadow:0 18px 50px rgba(200,87,122,.28);
+  }
+
+  .card::before,.card::after{
+    content:"";
+    position:absolute;
+    width:190px;height:190px;
+    background:
+      radial-gradient(circle at 50% 20%, rgba(255,255,255,.5) 0 12%, transparent 13%),
+      radial-gradient(circle at 78% 45%, rgba(255,255,255,.45) 0 12%, transparent 13%),
+      radial-gradient(circle at 65% 80%, rgba(255,255,255,.45) 0 12%, transparent 13%),
+      radial-gradient(circle at 35% 80%, rgba(255,255,255,.45) 0 12%, transparent 13%),
+      radial-gradient(circle at 22% 45%, rgba(255,255,255,.45) 0 12%, transparent 13%),
+      radial-gradient(circle at 50% 55%, rgba(255,255,255,.65) 0 9%, transparent 10%);
+    opacity:.55;pointer-events:none;z-index:0;
+  }
+  .card::before{top:16%;left:-70px;transform:rotate(-12deg)}
+  .card::after{bottom:16%;right:-70px;transform:rotate(18deg) scale(.85)}
+
+  /* ---------- Σημαιάκια ---------- */
+  .bunting{
+    position:relative;flex:0 0 auto;
+    height:64px;margin:0 -24px 2px;
+    display:flex;justify-content:center;align-items:flex-start;gap:2px;z-index:3;
+  }
+  .bunting::before{
+    content:"";position:absolute;top:9px;left:8%;right:8%;
+    height:0;border-top:2px dashed rgba(150,90,110,.55);border-radius:50%;
+  }
+  .flag{
+    width:30px;height:36px;margin-top:6px;
+    clip-path:polygon(0 0,100% 0,100% 66%,50% 100%,0 66%);
+    box-shadow:inset 0 -6px 10px rgba(0,0,0,.06);
+  }
+  .flag:nth-child(odd){background:linear-gradient(#fbb6cd,#f291b1)}
+  .flag:nth-child(even){background:linear-gradient(#fddfe9,#f8c2d6);margin-top:12px}
+
+  /* ---------- Κεντρική εικόνα: ΜΑΖΕΥΕΙ/ΜΕΓΑΛΩΝΕΙ για να χωράει ---------- */
+  .hero{
+    position:relative;z-index:2;
+    flex:0 1 auto;            /* παίρνει/δίνει τον χώρο που περισσεύει */
+    min-height:0;             /* επιτρέπει να μικρύνει σε κοντές οθόνες */
+    margin-top:6px;
+    display:flex;align-items:flex-end;justify-content:center;
+  }
+  .hero .slot{
+    width:100%;height:100%;
+    display:flex;align-items:flex-end;justify-content:center;border-radius:20px;
+  }
+  .hero .slot:not(.loaded){
+    border:2px dashed rgba(200,87,122,.45);
+    background:rgba(255,255,255,.35);
+  }
+  .hero .slot:not(.loaded)::before{
+    content:"κεντρική εικόνα\A(Lilo & Stitch)";
+    white-space:pre;text-align:center;color:var(--rose-deep);font-size:15px;opacity:.8;margin:auto;
+  }
+  .hero img{max-width:100%;max-height:100%;object-fit:contain;
+    filter:drop-shadow(0 10px 14px rgba(150,60,90,.28))}
+
+  .balloons{position:absolute;right:6px;bottom:-2px;z-index:1}
+  .balloon{position:absolute;width:32px;height:42px;border-radius:50%;
+    box-shadow:inset -6px -8px 12px rgba(0,0,0,.08)}
+  .b1{background:#bcd2f0;right:2px;bottom:22px;animation:bob 4.2s ease-in-out infinite}
+  .b2{background:#f6c1d5;right:28px;bottom:12px;width:28px;height:38px;animation:bob 3.6s ease-in-out infinite}
+  .b3{background:#e7c7ef;right:18px;bottom:36px;width:24px;height:32px;animation:bob 4.8s ease-in-out infinite}
+
+  /* ---------- Κείμενο ---------- */
+  .titlewrap{
+    position:relative;z-index:2;flex:0 0 auto;text-align:center;
+    margin:12px 6px 0;padding:18px 20px 16px;background:var(--panel);
+    border-radius:44% 56% 52% 48% / 60% 58% 42% 40%;
+    box-shadow:0 8px 22px rgba(200,87,122,.14);
+  }
+  .eyebrow{color:var(--rose-deep);font-size:16px;font-weight:600}
+  .name{color:var(--heading);font-size:clamp(30px,9vw,44px);font-weight:800;line-height:1.05;margin:2px 0}
+  .age{color:var(--blue);font-size:17px;font-weight:600}
+
+  .details{
+    position:relative;z-index:2;flex:0 0 auto;
+    margin:14px 10px 0;padding:16px 22px;background:var(--panel);
+    border-radius:22px;box-shadow:0 8px 22px rgba(200,87,122,.14);
+  }
+  .row{display:flex;align-items:center;gap:12px;padding:6px 0;font-size:17px}
+  .row .ic{font-size:20px;flex:0 0 auto}
+  .row b{color:var(--rose-deep);font-weight:800}
+  .maplink{color:var(--rose-deep);text-decoration:none;border-bottom:2px dotted var(--rose);padding-bottom:1px}
+  .maplink b{color:var(--rose-deep)}
+
+  /* ---------- Χαρακτήρες που λικνίζονται (κέντρο) ---------- */
+  .characters{
+    flex:0 0 auto;
+    margin-top:14px;margin-bottom:8px;   /* ανέβασέ τους αλλάζοντας το margin-bottom */
+    display:flex;justify-content:center;align-items:flex-end;gap:26px;z-index:4;
+  }
+  .char{
+    position:relative;width:88px;height:100px;
+    display:flex;align-items:flex-end;justify-content:center;
+  }
+  .char.left{transform-origin:50% 92%;animation:swayL 3.4s ease-in-out infinite}
+  .char.right{transform-origin:50% 92%;animation:swayR 3.9s ease-in-out infinite}
+  .char img{max-width:100%;max-height:100%;object-fit:contain;
+    filter:drop-shadow(0 6px 8px rgba(120,60,80,.3))}
+  .char:not(.loaded){border:2px dashed rgba(200,87,122,.4);border-radius:16px;background:rgba(255,255,255,.3)}
+  .char:not(.loaded)::before{
+    content:attr(data-label);color:var(--rose-deep);font-size:13px;opacity:.8;
+    position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);text-align:center;
+  }
+
+  @keyframes swayL{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(8deg)}}
+  @keyframes swayR{0%,100%{transform:rotate(6deg)}50%{transform:rotate(-8deg)}}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+  /* στρογγυλεμένη κάρτα σε υπολογιστή· σε κινητό γεμίζει όλη την οθόνη */
+  @media (min-width:480px){
+    body{padding:18px 0}
+    .card{height:calc(100dvh - 36px);border-radius:26px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .char.left,.char.right,.b1,.b2,.b3{animation:none}
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+
+    <!-- Σημαιάκια -->
+    <div class="bunting">
+      <span class="flag"></span><span class="flag"></span><span class="flag"></span>
+      <span class="flag"></span><span class="flag"></span><span class="flag"></span>
+      <span class="flag"></span>
+    </div>
+
+    <!-- Κεντρική εικόνα + μπαλόνια -->
+    <div class="hero">
+      <div class="slot" id="mainSlot">
+        <!-- ΑΛΛΑΞΕ: images/main.png -->
+        <img src="images/main.png" alt="" onload="this.parentElement.classList.add('loaded')" onerror="this.remove()">
+      </div>
+      <div class="balloons" aria-hidden="true">
+        <span class="balloon b3"></span>
+        <span class="balloon b1"></span>
+        <span class="balloon b2"></span>
+      </div>
+    </div>
+
+    <!-- Τίτλος -->
+     <div class="titlewrap">
+      <div class="eyebrow">Γίνομαι 8 χρονών 🎉</div>
+      <div class="name">Μαριανίνα</div>
+      <div class="age">Σε προσκαλώ στο πάρτυ μου!</div>
+    </div>
+
+    <!-- Στοιχεία -->
+    <div class="details">
+      <div class="row"><span class="ic">📅</span><span><b>Σάββατο</b>, 5 Σεπτεμβρίου</span></div>
+      <div class="row"><span class="ic">⏰</span><span>στις <b>17:00</b></span></div>
+      <div class="row"><span class="ic">📍</span><span><a class="maplink" href="ΕΔΩ_ΤΟ_MAPS_LINK" target="_blank" rel="noopener"><b>Πάρκο Εφόδου</b> — άνοιξε στον χάρτη</a></span></div>
+    </div>
+
+    <!-- Χαρακτήρες που λικνίζονται (στο κέντρο) -->
+    <div class="characters">
+      <div class="char left" data-label="Stitch">
+        <!-- ΑΛΛΑΞΕ: images/stitch.png (διάφανο PNG) -->
+        <img src="images/stitch.png" alt="Stitch" onload="this.parentElement.classList.add('loaded')" onerror="this.remove()">
+      </div>
+      <div class="char right" data-label="Angel">
+        <!-- ΑΛΛΑΞΕ: images/angel.png (διάφανο PNG) -->
+        <img src="images/angel.png" alt="Angel" onload="this.parentElement.classList.add('loaded')" onerror="this.remove()">
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
